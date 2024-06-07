@@ -1,6 +1,5 @@
 package com.example.androidnewfeaturestest.roomtest;
 
-import android.util.Log;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -24,12 +23,10 @@ public class WordListAdapter extends ListAdapter<Word, WordViewHolder> {
     public WordViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return WordViewHolder.create(parent);
     }
-
     @Override
     public void onBindViewHolder(@NonNull WordViewHolder holder, int position) {
         Word current = getItem(position);
         holder.bind(current.getWord());
-        Log.e("TAG", "onBindViewHolder: " + position);
     }
 
     public static class WordDiff extends DiffUtil.ItemCallback<Word> {

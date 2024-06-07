@@ -2,10 +2,10 @@ package com.example.androidnewfeaturestest.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
-import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -41,29 +41,30 @@ public class RoomMainActivity extends AppCompatActivity {
         mWordViewModel = new ViewModelProvider(this).get(WordViewModel.class);
         mWordViewModel.getAllWords().observe(this, adapter::submitList);
 
-
         FloatingActionButton fab = findViewById(R.id.fab);
+
+
+        ActivityResultLauncher<Intent> myLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                o -> {
+                    if (o.getResultCode() == RoomMainActivity.RESULT_OK) {
+                        Intent data = o.getData();
+                        assert data != null;
+                        String word = data.getStringExtra(NewWordActivityForRoom.EXTRA_REPLY);
+                        assert word != null;
+                        Word word1 = new Word(word);
+                        mWordViewModel.insert(word1);
+                    } else {
+                        Toast.makeText(getApplicationContext(),
+                                "Word empty",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+
         fab.setOnClickListener(v -> {
             Intent intent = new Intent(this, NewWordActivityForRoom.class);
-            // TODO -> check registerActivityForResult
-            startActivityForResult(intent, NEW_WORD_ACTIVITY_REQUEST_CODE);
+            myLauncher.launch(intent);
         });
 
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == NEW_WORD_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            Word word = new Word(data.getStringExtra(NewWordActivityForRoom.EXTRA_REPLY));
-            mWordViewModel.insert(word);
-            Log.e("TAG", "onActivityResult: " + data.getStringExtra(NewWordActivityForRoom.EXTRA_REPLY));
-
-        } else {
-            Toast.makeText(getApplicationContext(),
-                    "Word empty",
-                    Toast.LENGTH_LONG).show();
-        }
     }
 
     // /

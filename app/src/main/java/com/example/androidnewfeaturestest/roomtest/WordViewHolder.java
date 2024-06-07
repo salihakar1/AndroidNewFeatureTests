@@ -26,7 +26,6 @@ public class WordViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(String text) {
-        Log.e("TAG", "bind: " + text);
         wordItemView.setText(text);
     }
 
