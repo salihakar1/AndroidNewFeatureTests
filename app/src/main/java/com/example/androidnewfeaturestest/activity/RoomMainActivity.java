@@ -45,6 +45,8 @@ public class RoomMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.room_main_activity);
 
+        startActivity(new Intent(this, RetrofitMainActivity.class));
+
         recyclerView = findViewById(R.id.mRecyclerView);
         WordListAdapter adapter = new WordListAdapter(new WordListAdapter.WordDiff());
         recyclerView.setAdapter(adapter);
