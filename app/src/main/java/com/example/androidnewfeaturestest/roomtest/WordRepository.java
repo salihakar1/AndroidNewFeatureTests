@@ -32,6 +32,12 @@ public class WordRepository {
         });
     }
 
+    void delete(String word) {
+        WordRoomDatabase.databaseWriteExecutor.execute(() -> {
+            mWordDao.deleteWord(word);
+        });
+    }
+
     void deleteAll() {
         WordRoomDatabase.databaseWriteExecutor.execute(() -> {
             mWordDao.deleteAll();

@@ -14,7 +14,7 @@ public class Word {
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "word")
-    private String mWord;
+    private final String mWord;
 
 //    @PrimaryKey(autoGenerate = true)
 //    private int id;
